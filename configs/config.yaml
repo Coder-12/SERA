@@ -1,0 +1,15 @@
+retrieval:
+  provider: "arxiv"
+  max_results: 5
+
+embedding:
+  model_name: "all-MiniLM-L6-v2"
+  chunk_size: 500
+  overlap: 50
+
+storage:
+  vector_db: "chroma"
+  path: "./data/vector_store"
+
+logging:
+  level: "INFO"

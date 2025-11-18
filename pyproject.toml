@@ -1,0 +1,16 @@
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+ignore_missing_imports = true
+strict = true
+disable_error_code = ["import-untyped"]
+
+[tool.ruff]
+select = ["E", "F"]
+line-length = 100
+
+

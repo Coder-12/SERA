@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# Byte-compiled
+*.swp
+*.swo
+
+# Virtual envs
+.venv/
+env/
+venv/
+
+# Test artifacts
+.coverage
+htmlcov/
+pytest-cache/
+
+# Local data (PDFs, DBs, Chroma)
+data/
+downloads/
+*.db
+*.sqlite
+*.sqlite3
+
+# Chroma internal dirs
+chroma/
+chroma_db/
+indexes/
+
+# Models
+*.pt
+*.bin
+*.h5
+*.onnx
+
+# logs
+logs/
+*.log
+
+# macOS
+.DS_Store
+
+# Environment files
+.env
+.env.*
+.idea/
