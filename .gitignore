@@ -1,9 +1,13 @@
 # Python
 __pycache__/
+*.py[cod]
 *.pyc
 *.pyo
 *.pyd
 *.pdb
+*.egg-info/
+dist/
+build/
 
 # Byte-compiled
 *.swp
@@ -18,10 +22,16 @@ venv/
 .coverage
 htmlcov/
 pytest-cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # Local data (PDFs, DBs, Chroma)
+# Runtime paths in scripts/ingest_query.py, scripts/ingest_paper.py,
+# services/pdf_downloader.py, memory/simple_adapter.py, and memory/metadata_db.py.
 data/
 downloads/
+*.pdf.part
 *.db
 *.sqlite
 *.sqlite3
