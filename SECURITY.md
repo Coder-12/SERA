@@ -1,91 +1,15 @@
 # Security Policy
 
-## Supported Versions
+SERA is under development. The current ingestion baseline has known correctness and persistence limitations; see the [README](README.md#known-foundation-limitations). No production security certification or release-support guarantee is asserted.
 
-The SERA project follows a **rolling-release** model during early development.
-At present, **only the latest commit on the `main` branch** is actively supported.
+## Reporting a vulnerability
 
-| Version     | Supported |
-|-------------|-----------|
-| 0.1.x (Research Agent v0) | ✔ Active |
-| < 0.1.0      | ✘ Unsupported |
+Do not disclose sensitive vulnerability details in a public issue. Contact the repository maintainer privately to arrange a secure reporting channel. A dedicated reporting address and response-time commitments have not been established in this repository.
 
-This will be expanded when stable releases become available.
+Include the affected revision, reproduction steps, potential impact and environment details. Redact credentials, personal data and other sensitive material. For non-sensitive correctness issues, use the repository's GitHub Issues tab.
 
----
+## Security scope
 
-## Reporting a Vulnerability
+The ingestion pipeline handles external network responses and untrusted PDFs, model workloads, vector storage and SQLite metadata. The approved [design and execution plan](docs/design_doc.md) specifies the planned agent security boundaries, including untrusted retrieved content, secret handling, resource limits, sandboxed code execution and fault-tolerance testing. These future controls must not be treated as implemented or validated before their applicable gates pass.
 
-We take security seriously.  
-If you discover a vulnerability, **please do *not* open a public issue.**
-
-Instead, send a detailed report to:
-
-📧 **security@sera-research.dev**  
-*(If this email is not configured yet, replace with your preferred private email and update later.)*
-
-Your report should include:
-
-- A detailed description of the vulnerability  
-- Steps to reproduce the issue  
-- Potential impact  
-- Any suggested fixes (optional but appreciated)  
-- Environment details (OS, Python version, etc.)
-
-You will receive an acknowledgment within **48 hours**, and a full response within **7 days**.
-
----
-
-## Scope of Security Considerations
-
-The following components of SERA may handle external data and therefore require careful review:
-
-- **ArXiv Retriever** — external network calls  
-- **PDF Downloader** — file streaming, network I/O  
-- **PDF Parser** — handling untrusted PDFs through PyMuPDF  
-- **Chunker / Embedder** — resource-heavy CPU/GPU workloads  
-- **Chroma Vector Store** — interaction with local or remote DB  
-- **Metadata SQLite DB** — local persistence, schema integrity  
-- **Multi-Agent Pipeline** (future versions)  
-- **OpenAI / API integrations** (optional)
-
-If you believe any of these could be exploited — please contact us immediately.
-
----
-
-## Coordinated Disclosure
-
-We follow responsible disclosure practices:
-
-1. We will investigate privately.  
-2. A fix will be developed in a private branch.  
-3. A security patch release will be published.  
-4. You will be credited (unless you request anonymity).  
-5. We will publish a security advisory only after confirmation.
-
----
-
-## Non-Security Issues
-
-For non-security bugs (performance, correctness, UX),  
-please use the **GitHub Issues** tab normally.
-
----
-
-## Future Security Roadmap
-
-The following items are planned for future versions:
-
-- Signed releases & package integrity verification  
-- Optional sandboxing for PDF parsing  
-- Hardened network timeouts & retries  
-- Rate-limiting for internal agents  
-- Encrypted vector store modes  
-- Secure multi-agent communication channels  
-- Secrets management (Vault / GCP Secret Manager)  
-- Zero-trust module boundaries for agent orchestration  
-
----
-
-Maintaining a secure and trustworthy research agent is a top priority.  
-Thank you for helping us keep SERA safe and robust.
+Coordinate disclosure with the maintainer before publishing details.

@@ -1,115 +1,21 @@
-# Changelog  
-All notable changes to **SERA (Scientific Extraction & Research Agent)** will be documented in this file.
+# Changelog
 
-This project follows **semantic versioning** (MAJOR.MINOR.PATCH).
+Historical entry for the ingestion baseline. This is a record of implementation history, not a release certification or current roadmap. The [approved design and execution plan v3.0](docs/design_doc.md) supersedes the earlier future-version proposals.
 
----
+## 0.1.0 — 2025-11-14 (historical entry)
 
-## [0.1.0] – 2025-11-14  
-### **Initial Release — Research Agent (v0)**  
-This version includes the complete, fully-tested foundation of the **Research Agent** pipeline.
+The initial ingestion implementation introduced:
 
-#### ✔ Core Features  
-- **Async ArXiv Retriever**  
-  - Full ATOM XML parser  
-  - Retry logic + robust namespace handling  
-  - Metadata fetch by ID  
-  - Live network tested
+- Async arXiv Atom retrieval, metadata fetch by ID and retry logic.
+- Streaming, cache-aware PDF downloading with temporary files, size limits and PDF-header validation.
+- PyMuPDF page extraction and token-aware overlapping chunks.
+- Sentence Transformers batching, a legacy optional OpenAI embedding path and deterministic hash-vector fallback.
+- JSON and Chroma vector adapters for insertion, search, deletion and persistence interfaces.
+- SQLite paper, chunk and vector metadata with per-operation transactions.
+- An asynchronous paper ingestion pipeline, unit/integration test modules and a live ingestion test.
 
-- **PDF Downloader**  
-  - Streaming download  
-  - Cache-aware  
-  - Timeout & max-size safeguards  
-  - Fully unit-tested + real PDF download tested
+## Baseline qualification — design v3.0, commit `3149561`
 
-- **PDF Parser (PyMuPDF)**  
-  - Page-wise parsing  
-  - Error-safe extraction  
-  - PageData structure  
-  - 100% test coverage
+The [README](README.md#known-foundation-limitations) documents F1–F5, including incomplete text storage, unreliable interrupted-ingestion recovery, hash-vector fallback, the incompatible OpenAI API path and missing enforced embedding provenance. The original entry's universal test-pass, coverage, platform-safety and reliability claims are not established by the retained evidence. The baseline uses root-level component directories; the `sera/` package is planned for Phase 0.2.
 
-- **Token-Aware Chunker**  
-  - tiktoken-based  
-  - Overlap handling  
-  - Fallback tokenizer  
-  - Unit-tested for deterministic correctness
-
-- **Embedder**  
-  - SentenceTransformers backend  
-  - OpenAI backend (optional)  
-  - Deterministic shim fallback  
-  - Batch encoding + retry logic  
-  - Torch/MPS/CUDA safe  
-  - Fully tested including retry-case mock
-
-- **Vector Stores**  
-  - `SimpleVectorAdapter` (JSON-backed)  
-  - `ChromaAdapter` (full version-adaptive support)
-  - Handle: add/search/delete/persist  
-  - Robust: retries, dimension validation  
-  - Chroma exhaustive tests (mocks + live)
-
-- **MetadataDB (SQLite)**  
-  - PaperRecord + ChunkRecord + VectorLink  
-  - Upsert paper  
-  - Add chunks  
-  - Link vectors  
-  - Fully tested CRUD and persistence
-
-- **Research Agent Orchestrator**  
-  - Complete ingestion pipeline:  
-    search → download → parse → chunk → embed → store → record  
-  - Async end-to-end workflow  
-  - Clean abstraction for multi-agent integration  
-  - Mock tests + Live Integration Test
-
-#### ✔ Test Suite (100+ scenarios)  
-- Complete unit tests for:
-  - retriever  
-  - downloader  
-  - pdf parser  
-  - chunker  
-  - embedder  
-  - simple vector store  
-  - chroma adapter  
-  - metadata DB  
-  - ingest_query  
-  - ingest_paper  
-- Full real-network integration test  
-- All tests **passing**  
-- CI/offline-safe shims
-
-#### ✔ Project Structure  
-- Added initial documentation templates:  
-  - `README.md` (Research Agent v0)  
-  - `CONTRIBUTING.md`  
-  - `PULL_REQUEST_TEMPLATE.md`  
-  - `CODE_OF_CONDUCT.md`  
-- Set up consistent directory layout under `sera/`
-
----
-
-## Future Versions (Planned)
-
-### 0.2.0 — Reader Agent  
-- Extractive + abstractive summarization  
-- Tier-1 chunk ranking  
-- Multi-pass relevance scoring  
-- Citation graph builder  
-- Query-focused summarization
-
-### 0.3.0 — Multi-Agent Pipeline  
-- Researcher ↔ Reader ↔ Synthesizer  
-- Orchestrated multi-tool reasoning  
-- Draft → refine → verify loop  
-- Human-in-the-loop mode
-
-### 0.4.0 — SOTA Enhancements  
-- Agent memory  
-- Self-evaluation scoring  
-- Alignment-feedback chain  
-- Retrieval optimization (GQA, MQA)  
-- RL-based refinement
-
----
-
+The historical CI gate is a hermetic selection, not the full live suite. No performance or self-improvement result is claimed here. See the approved plan for the remaining milestones and their acceptance criteria.

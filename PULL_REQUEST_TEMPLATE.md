@@ -1,116 +1,21 @@
+## Summary and motivation
 
-````markdown
-## 🚀 Summary
+Describe the bounded change, governing design section and dependency it clears. Link any relevant issue or [design document](docs/design_doc.md).
 
-_Provide a short summary of the changes introduced in this PR._
+## Scope and compatibility
 
-Examples:
-- Adds batch-stable embedder retry logic for production reliability.
-- Fixes ChromaAdapter include detection across versions.
-- Implements Research Agent v0 ingestion pipeline (arXiv → PDF → parse → chunk → embed → store).
+Describe changed interfaces, data/schema changes, migration implications and known limitations. Identify any required approval or ADR.
 
----
+## Verification
 
-## 🧠 Motivation
+- [ ] Relevant positive and negative tests executed.
+- [ ] Relevant integration and hermetic regression checks executed, where applicable.
+- [ ] Formatting and import checks executed, where applicable.
+- [ ] Documentation and claims updated.
+- [ ] Known failures, skipped or unexecuted checks and evidence scope disclosed.
 
-_Why is this change necessary? What problem does it solve?_
+Record exact commands and results, including the revision, environment and evidence locations where relevant. The README describes the baseline CI selection. Live tests may require network access or model downloads. Do not claim a test or phase gate passed without applicable evidence.
 
-Examples:
-- Ensures embedding operations are resilient to transient failures.
-- Enables deterministic chunk metadata linking for downstream agents.
-- Implements missing API consistency across adapters.
+## Review
 
----
-
-## 🔍 Related Issues / Tickets
-
-_Link any issue numbers or design documents._
-
-- Closes #123
-- Relates to design: `/docs/architecture/research_agent_v0.md`
-
----
-
-## 📦 What Changed?
-
-### **New Features**
-- [ ] SentenceTransformers async-safe encoding
-- [ ] Metadata DB chunk-level indexing
-- [ ] Chroma API version-adaptive include logic
-
-### **Fixes**
-- [ ] Fixed dimension mismatch handling in vector adapters
-- [ ] Resolved PDFParser partial-page extraction edge case
-- [ ] Stabilized retry logic for `_with_retries()`
-
-### **Refactors**
-- [ ] Improved naming consistency across modules
-- [ ] Extracted utility helpers into `utils/`
-
----
-
-## 🧪 Testing Done
-
-### **Unit Tests**
-- [ ] Added new tests covering this feature
-- [ ] All tests pass locally  
-  ```bash
-  pytest -q
-````
-
-### **Integration Tests**
-
-* [ ] Verified end-to-end ingestion
-
-  ```bash
-  pytest tests/*integration* -q
-  ```
-
-### **Live Tests (optional)**
-
-* [ ] Validated real arXiv → PDF → parse → chunk → embed → chroma store
-
-  ```bash
-  pytest tests/test_full_integration_live.py -s
-  ```
-
-Attach output if relevant.
-
----
-
-## 🔬 How to Review
-
-*Check all that apply:*
-
-* [ ] Small building block — easy to review
-* [ ] Medium-sized change — requires careful review
-* [ ] Large PR — please review commit-by-commit
-* [ ] Needs async / concurrency expertise
-* [ ] Needs vector-store expertise
-* [ ] Needs ML/NLP expertise
-
----
-
-## ⚡ Breaking Changes?
-
-Does this PR introduce breaking changes?
-
-* [ ] Yes
-* [ ] No
-
-If yes, describe impact and migration steps:
-
----
-
-## 📚 Documentation Updated?
-
-* [ ] README updated
-* [ ] Architecture docs updated
-* [ ] Example scripts updated
-* [ ] Inline docstrings added/updated
-
----
-
-## ❤️ Thank You
-
-Thank you for reviewing this PR! Your feedback directly improves SERA’s engineering quality and research capabilities.
+Identify the most consequential failure mode, any unresolved risk, and the next permitted decision. Confirm the change stays within the approved phase and authorization boundaries.
