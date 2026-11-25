@@ -15,11 +15,11 @@ The ingestion pipeline is dependency-injected and uses single-process asyncio wi
 
 | Area | Current source | Status at baseline |
 | --- | --- | --- |
-| arXiv retrieval | `agents/retriever_arxiv_real.py` | Implemented retrieval client; global rate limiter required |
-| PDF download, parse, chunk | `services/pdf_downloader.py`, `parsers/pdf_parser.py`, `utils/chunker.py` | Implemented |
-| Ingestion and embeddings | `agents/researcher_agent.py`, `embeddings/embedder.py` | Implemented; F1–F5 repairs required |
-| Metadata and vector adapters | `memory/metadata_db.py`, `memory/chroma_adapter.py`, `memory/simple_adapter.py` | Implemented; corpus integrity and durable linkage not established |
-| API and orchestrator | `services/api_server.py`, `orchestrator/langgraph_dag.py` | Health endpoint implemented; research orchestration planned |
+| arXiv retrieval | `sera/ingestion/arxiv_retriever.py` | Implemented retrieval client; global rate limiter required |
+| PDF download, parse, chunk | `sera/services/pdf_downloader.py`, `sera/parsers/pdf_parser.py`, `sera/utils/chunker.py` | Implemented |
+| Ingestion and embeddings | `sera/ingestion/pipeline.py`, `sera/embeddings/embedder.py` | Implemented; F1–F5 repairs required |
+| Metadata and vector adapters | `sera/memory/metadata_db.py`, `sera/memory/chroma_adapter.py`, `sera/memory/simple_adapter.py` | Implemented; corpus integrity and durable linkage not established |
+| API and orchestrator | `sera/api/api_server.py`, `sera/orchestrator/langgraph_dag.py` | Health endpoint implemented; research orchestration planned |
 
 The corpus currently lacks full stored chunk text, reliable interrupted-ingestion recovery, fail-closed embedding behavior and enforced embedding provenance. The legacy OpenAI path also requires repair or removal. See [README limitations](../README.md#known-foundation-limitations) and §13 Phase 0.3 of the design. SQLite per-operation transactions do not establish atomicity across SQLite and the vector store.
 

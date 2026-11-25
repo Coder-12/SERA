@@ -1,8 +1,36 @@
+[build-system]
+requires = ["setuptools==70.1.0", "wheel==0.43.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sera"
+version = "0.1.0"
+description = "Research paper ingestion and vector indexing"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = {file = "LICENSE"}
+dynamic = ["dependencies"]
+
+[project.scripts]
+sera-ingest-paper = "sera.cli.ingest_paper:run"
+sera-ingest-query = "sera.cli.ingest_query:run"
+
+[tool.setuptools.packages.find]
+include = ["sera", "sera.*"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.package-data]
+"sera.configs" = ["config.yaml"]
+
 [tool.black]
 line-length = 100
 
 [tool.isort]
 profile = "black"
+known_first_party = ["sera"]
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -10,7 +38,7 @@ strict = true
 disable_error_code = ["import-untyped"]
 
 [tool.ruff]
-select = ["E", "F"]
 line-length = 100
 
-
+[tool.ruff.lint]
+select = ["E", "F"]

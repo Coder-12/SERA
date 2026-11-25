@@ -1,14 +1,7 @@
 # Path: scripts/debug_arxiv_retriever.py
-import os
-import sys
-
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
-
 import asyncio
 
-from agents.retriever_arxiv_real import ArxivRetriever
+from sera.ingestion.arxiv_retriever import ArxivRetriever
 
 
 async def main():

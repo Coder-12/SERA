@@ -45,24 +45,24 @@ git clone https://github.com/Coder-12/SERA.git
 cd SERA
 python3.12 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt
+python -m pip install -e .
 ```
 
 If you already have a checkout, skip the clone and change-directory commands.
 
 ## Run
 
-Inspect the CLI options without making a network request:
+The installed commands can run from any directory. Inspect the CLI options without making a network request:
 
 ```bash
-python -m scripts.ingest_query --help
-python -m scripts.ingest_paper --help
+sera-ingest-query --help
+sera-ingest-paper --help
 ```
 
 The following example ingests one result using the JSON vector store. Use only disposable local data for baseline demonstrations, not a trusted corpus:
 
 ```bash
-python -m scripts.ingest_query --query "state space models" --max-results 1 --adapter simple
+sera-ingest-query --query "state space models" --max-results 1 --adapter simple
 ```
 
 The ingestion command contacts arXiv, downloads a PDF, and may download the local embedding model on first use. A global arXiv rate limiter is not yet implemented; avoid bulk ingestion until the foundation repairs are complete.
@@ -71,22 +71,22 @@ The optional OpenAI embedding implementation expects an API key, but is broken a
 
 ## Test
 
-CI uses Python 3.12, Black, isort and a hermetic pytest selection. After installing the runtime dependencies, install the additional test dependencies and reproduce the pytest selection:
+CI uses Python 3.12, Black, isort, scoped Ruff and strict mypy, and a hermetic pytest selection. After installing the runtime dependencies, install the additional test dependencies and reproduce the pytest selection:
 
 ```bash
 python -m pip install -r requirements-dev.txt
 pytest -q \
-  --ignore=tests/test_full_integration_live.py \
-  --ignore=tests/test_integration_real_query.py \
-  --ignore=tests/test_retriever_arxiv.py \
-  --ignore=tests/test_pdf_downloader.py \
-  --ignore=tests/test_pdf_parser.py \
-  --ignore=tests/test_embedder.py \
-  --ignore=tests/test_vector_validation.py \
+  --ignore=tests/integration/test_full_integration_live.py \
+  --ignore=tests/integration/test_integration_real_query.py \
+  --ignore=tests/integration/test_retriever_arxiv.py \
+  --ignore=tests/integration/test_pdf_downloader.py \
+  --ignore=tests/integration/test_pdf_parser.py \
+  --ignore=tests/integration/test_embedder.py \
+  --ignore=tests/contract/test_vector_validation.py \
   --ignore=scripts/download_pdf_test.py
 ```
 
-The broader `pytest -q` invocation can collect network- or model-dependent tests and scripts; it is not the same as the hermetic CI selection. `tests/test_full_integration_live.py` makes live arXiv and PDF requests and can skip when arXiv returns no results or the PDF download fails.
+The broader `pytest -q` invocation can collect network- or model-dependent tests and scripts; it is not the same as the hermetic CI selection. `tests/integration/test_full_integration_live.py` makes live arXiv and PDF requests and can skip when arXiv returns no results or the PDF download fails.
 
 The CI badge reports the remote main branch, not the result of tests in a local checkout.
 
@@ -94,12 +94,12 @@ The CI badge reports the remote main branch, not the result of tests in a local 
 
 | Stage | Implementation |
 | --- | --- |
-| Retrieval | Async arXiv Atom API client with retries in `agents/retriever_arxiv_real.py` |
-| Download | Streaming PDF download, size and PDF-header checks, retries, and temporary `.part` files in `services/pdf_downloader.py` |
-| Parsing and chunking | PyMuPDF page extraction in `parsers/pdf_parser.py`; token-sized overlapping chunks in `utils/chunker.py` |
-| Embeddings | Batched Sentence Transformers, legacy OpenAI path and deterministic fallback in `embeddings/embedder.py`; see F3–F5 |
-| Storage | Chroma or JSON vectors in `memory/`; SQLite paper, chunk and vector-link metadata in `memory/metadata_db.py` |
-| Ingestion | Dependency-injected pipeline in `agents/researcher_agent.py`; the class name does not imply an LLM agent |
+| Retrieval | Async arXiv Atom API client with retries in `sera/ingestion/arxiv_retriever.py` |
+| Download | Streaming PDF download, size and PDF-header checks, retries, and temporary `.part` files in `sera/services/pdf_downloader.py` |
+| Parsing and chunking | PyMuPDF page extraction in `sera/parsers/pdf_parser.py`; token-sized overlapping chunks in `sera/utils/chunker.py` |
+| Embeddings | Batched Sentence Transformers, legacy OpenAI path and deterministic fallback in `sera/embeddings/embedder.py`; see F3–F5 |
+| Storage | Chroma or JSON vectors in `sera/memory/`; SQLite paper, chunk and vector-link metadata in `sera/memory/metadata_db.py` |
+| Ingestion | Dependency-injected pipeline in `sera/ingestion/pipeline.py` (`IngestionPipeline`) |
 
 The downloader starts a fresh request after an interrupted download, validates the PDF header (not a checksum), and moves the validated temporary file to its final path. This does not establish power-loss recovery for the whole ingestion pipeline.
 

@@ -1,56 +1,39 @@
-# -----------------------------
-# Makefile for SERA (Research Agent)
-# -----------------------------
+PYTHON ?= python
+PIP := $(PYTHON) -m pip
+FORMAT_PATHS := sera scripts tests
+# Design §11 introduces strict checks incrementally for the new package scopes.
+LINT_PATHS := sera/agents sera/orchestrator sera/evaluation
 
-PYTHON := python
-PIP := pip
-
-# Default virtual environment name
-ENV := .venv
-
-# -----------------------------
-# Setup Commands
-# -----------------------------
+.PHONY: init dev install format format-check lint test test-live test-all clean help
 
 init:
-	$(PIP) install -r requirements.txt
+	$(PIP) install -e .
 
 dev:
 	$(PIP) install -r requirements-dev.txt
 
 install:
-	make init
-	make dev
-
-# -----------------------------
-# Code Quality
-# -----------------------------
+	$(PIP) install -e . -r requirements-dev.txt
 
 format:
-	black sera/ tests/
-	isort sera/ tests/
+	$(PYTHON) -m isort $(FORMAT_PATHS)
+	$(PYTHON) -m black $(FORMAT_PATHS)
+
+format-check:
+	$(PYTHON) -m isort --check-only $(FORMAT_PATHS)
+	$(PYTHON) -m black --check $(FORMAT_PATHS)
 
 lint:
-	ruff check sera/ tests/
-	flake8 sera/
-	mypy sera/
-
-# -----------------------------
-# Testing
-# -----------------------------
+	$(PYTHON) -m ruff check $(LINT_PATHS)
+	$(PYTHON) -m mypy $(LINT_PATHS)
 
 test:
-	pytest -q
+	$(PYTHON) -m pytest -q
 
 test-live:
-	pytest -q tests/test_full_integration_live.py
+	$(PYTHON) -m pytest -q tests/integration/test_full_integration_live.py
 
-test-all:
-	pytest -q
-
-# -----------------------------
-# Utilities
-# -----------------------------
+test-all: test
 
 clean:
 	find . -type f -name "*.pyc" -delete
@@ -60,15 +43,13 @@ clean:
 	rm -rf data/*
 	rm -rf downloads/*
 
-# -----------------------------
-# Help
-# -----------------------------
 help:
 	@echo "Commands:"
-	@echo "  make init        - Install production dependencies"
-	@echo "  make dev         - Install development tools"
-	@echo "  make install     - Install everything"
-	@echo "  make format      - Run black + isort"
-	@echo "  make lint        - Run ruff, flake8, mypy"
-	@echo "  make test        - Run all tests"
-	@echo "  make clean       - Cleanup build artifacts"
+	@echo "  make init         - Install the package and runtime dependencies"
+	@echo "  make dev          - Install development tools"
+	@echo "  make install      - Install the package and development tools"
+	@echo "  make format       - Run isort and Black"
+	@echo "  make format-check - Check isort and Black"
+	@echo "  make lint         - Run Ruff and strict mypy on the approved scopes"
+	@echo "  make test         - Run the full suite, including live tests"
+	@echo "  make clean        - Remove generated files and local runtime data"

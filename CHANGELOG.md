@@ -16,6 +16,6 @@ The initial ingestion implementation introduced:
 
 ## Baseline qualification — design v3.0, commit `3149561`
 
-The [README](README.md#known-foundation-limitations) documents F1–F5, including incomplete text storage, unreliable interrupted-ingestion recovery, hash-vector fallback, the incompatible OpenAI API path and missing enforced embedding provenance. The original entry's universal test-pass, coverage, platform-safety and reliability claims are not established by the retained evidence. The baseline uses root-level component directories; the `sera/` package is planned for Phase 0.2.
+The [README](README.md#known-foundation-limitations) documents F1–F5, including incomplete text storage, unreliable interrupted-ingestion recovery, hash-vector fallback, the incompatible OpenAI API path and missing enforced embedding provenance. The original entry's universal test-pass, coverage, platform-safety and reliability claims are not established by the retained evidence. That baseline used root-level component directories. Phase 0.2 moves the implementation under `sera/` as described in [ADR-000](adr/000-package-layout.md).
 
 The historical CI gate is a hermetic selection, not the full live suite. No performance or self-improvement result is claimed here. See the approved plan for the remaining milestones and their acceptance criteria.
